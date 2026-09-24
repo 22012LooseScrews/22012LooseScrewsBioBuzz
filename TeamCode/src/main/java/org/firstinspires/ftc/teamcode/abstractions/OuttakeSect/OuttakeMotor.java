@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.abstractions;
+package org.firstinspires.ftc.teamcode.abstractions.OuttakeSect;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
