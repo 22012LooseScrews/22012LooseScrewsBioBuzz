@@ -1,24 +1,24 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.testing;
 
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
-import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 
 @TeleOp
-public class IntakeTestingTeleop extends OpMode {
-    DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, intakeMotor;
-    IntakeMotor intake_motor;
+public class LimelightServoTestingTeleop extends OpMode {
+    DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor;
+    LimelightServo limelightServo;
+    Limelight3A limelight;
     @Override
     public void init(){
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
         backLeftMotor = hardwareMap.get(DcMotor.class, "backLeftMotor");
-
+        limelightServo = new LimelightServo(this);
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -27,6 +27,7 @@ public class IntakeTestingTeleop extends OpMode {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
     @Override
     public void loop(){
         double x = -gamepad1.left_stick_x;
@@ -38,13 +39,11 @@ public class IntakeTestingTeleop extends OpMode {
         backLeftMotor.setPower((y - x + rx) / denominator);
         frontRightMotor.setPower((y - x - rx) / denominator);
         backRightMotor.setPower((y + x - rx) / denominator);
-        if (gamepad1.right_trigger > 0.1) {
-            intake_motor.intake_intake();
-        } else if (gamepad1.left_trigger > 0.1) {
-            intake_motor.intake_outtake();
-        } else {
-            intake_motor.intake_stop();
+        if (gamepad1.squareWasPressed()) {
+            limelightServo.limelightServo_up();
         }
-
+        if (gamepad1.triangleWasPressed()) {
+            limelightServo.limelightServo_down();
+        }
     }
 }

@@ -1,19 +1,19 @@
-package org.firstinspires.ftc.teamcode.opmodes.teleop;
+package org.firstinspires.ftc.teamcode.opmodes.testing;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
+
 @TeleOp
-public class OuttakeTestingTeleop extends OpMode {
-    DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor;
-    OuttakeMotor outtake_motor;
+public class IntakeTestingTeleop extends OpMode {
+    DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, intakeMotor;
+    IntakeMotor intake_motor;
     @Override
     public void init(){
-//        outtakeMotor = hardwareMap.get(DcMotor.class, "outtake_motor");
-        outtake_motor = new OuttakeMotor(this);
+        intake_motor = new IntakeMotor(this);
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
@@ -39,11 +39,12 @@ public class OuttakeTestingTeleop extends OpMode {
         frontRightMotor.setPower((y - x - rx) / denominator);
         backRightMotor.setPower((y + x - rx) / denominator);
         if (gamepad1.right_trigger > 0.1) {
-            outtake_motor.outtake_far();
+            intake_motor.intake_intake();
         } else if (gamepad1.left_trigger > 0.1) {
-            outtake_motor.outtake_close();
+            intake_motor.intake_outtake();
         } else {
-            outtake_motor.outtake_stop();
+            intake_motor.intake_stop();
         }
+
     }
 }
