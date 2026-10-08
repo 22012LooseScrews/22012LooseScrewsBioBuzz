@@ -21,4 +21,6 @@ public class IntakeMotor {
     public void intake_stop(){
         intakeMotor.setPower(0);
     }
+    public void intake_spec_in(double n) {intakeMotor.setPower((n+0.3)%1.01);}
+    public void intake_spec_out(double n) {intakeMotor.setPower(-((n+0.3)%1.01));}
 }

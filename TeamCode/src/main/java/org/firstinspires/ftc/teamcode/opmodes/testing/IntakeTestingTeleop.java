@@ -38,6 +38,8 @@ public class IntakeTestingTeleop extends OpMode {
         backLeftMotor.setPower((y - x + rx) / denominator);
         frontRightMotor.setPower((y - x - rx) / denominator);
         backRightMotor.setPower((y + x - rx) / denominator);
+        double boi = gamepad1.right_trigger-0.3;
+        double boi2 = gamepad1.left_trigger-0.3;
         if (gamepad1.right_trigger > 0.1) {
             intake_motor.intake_intake();
         } else if (gamepad1.left_trigger > 0.1) {
@@ -45,6 +47,9 @@ public class IntakeTestingTeleop extends OpMode {
         } else {
             intake_motor.intake_stop();
         }
-
+//        intake_motor.intake_spec_in(boi);
+//        intake_motor.intake_spec_out(boi2);
+        telemetry.addData("righttriggerBOI",gamepad1.right_trigger);
+        telemetry.addData("lefttriggerBOI",gamepad1.left_trigger);
     }
 }
