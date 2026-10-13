@@ -10,10 +10,10 @@ public class LimelightServo {
         limelightServo.setDirection(Servo.Direction.FORWARD);
     }
     public void limelightServo_up() {
-        limelightServo.setPosition(0.25);
+        limelightServo.setPosition(0);
     }
     public void limelightServo_down() {
-        limelightServo.setPosition(0.75);
+        limelightServo.setPosition(1);
     }
     public void limelightServo_zero() {
         limelightServo.setPosition(0);

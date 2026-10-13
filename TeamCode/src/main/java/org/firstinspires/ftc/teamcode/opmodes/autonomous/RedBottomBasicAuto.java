@@ -14,12 +14,13 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.paths.Path;
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.math.Pose;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-
+@Autonomous
 public class RedBottomBasicAuto extends LinearOpMode {
     IntakeMotor intakeMotor = new IntakeMotor(this);
     OuttakeMotor outtakeMotor = new OuttakeMotor(this);
