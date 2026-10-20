@@ -15,18 +15,20 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
+@Autonomous
 public class RedMostWorkAuto extends LinearOpMode {
     IntakeMotor intakeMotor = new IntakeMotor(this);
     OuttakeMotor outtakeMotor = new OuttakeMotor(this);
     private Follower follower;
     private final PoseFactory poseFactory = PoseFactory.degrees();
-    private final Pose start = poseFactory.of(61, 133.5, 270);
+    private final Pose start = poseFactory.of(62.5, 133.5, 270);
     private final Pose rotate = poseFactory.of(58.1473, 12.9877, 90);
     private final Pose rotate_control = poseFactory.of(61.4413, 62.506, 0);
     private final Pose balls = poseFactory.of(23.2, 8.1, 180);
