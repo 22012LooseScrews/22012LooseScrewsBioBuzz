@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 
 // Red Alliance Tags - 30-37
 // Blue Alliance Tags - 38-45
