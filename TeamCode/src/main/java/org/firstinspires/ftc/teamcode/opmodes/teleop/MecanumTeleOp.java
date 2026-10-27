@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor;
-    IntakeMotor intakeMotor;
+    IntakeMotor intakeMotor1;
     @Override
     public void init() {
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
@@ -29,11 +29,12 @@ public class MecanumTeleOp extends OpMode {
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor1 = new IntakeMotor(this);
     }
 
     @Override
     public void loop(){
-        double x = -gamepad1.left_stick_x;
+        double x = -gamepad1.left_stick_x * 1.1;
         double y = gamepad1.left_stick_y;
         double rx = -gamepad1.right_stick_x;
 
@@ -44,13 +45,13 @@ public class MecanumTeleOp extends OpMode {
         backRightMotor.setPower((y + x - rx) / denominator);
 
         if(gamepad1.left_bumper){
-            intakeMotor.intake_intake();
+            intakeMotor1.intake_intake();
         }
         else if(gamepad1.right_bumper){
-            intakeMotor.intake_outtake();
+            intakeMotor1.intake_outtake();
         }
         else{
-            intakeMotor.intake_stop();
+            intakeMotor1.intake_stop();
         }
     }
 }

@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 
 @TeleOp
 public class IntakeTestingTeleop extends OpMode {
-    DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor, intakeMotor;
-    IntakeMotor intake_motor;
+    DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor;
+    IntakeMotor intakeMotor;
     @Override
     public void init(){
-        intake_motor = new IntakeMotor(this);
+        intakeMotor = new IntakeMotor(this);
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
@@ -41,14 +41,14 @@ public class IntakeTestingTeleop extends OpMode {
         double boi = gamepad1.right_trigger-0.3;
         double boi2 = gamepad1.left_trigger-0.3;
         if (gamepad1.right_trigger > 0.1) {
-            intake_motor.intake_intake();
+            intakeMotor.intake_intake();
         } else if (gamepad1.left_trigger > 0.1) {
-            intake_motor.intake_outtake();
+            intakeMotor.intake_outtake();
         } else {
-            intake_motor.intake_stop();
+            intakeMotor.intake_stop();
         }
-//        intake_motor.intake_spec_in(boi);
-//        intake_motor.intake_spec_out(boi2);
+//        .intake_spec_in(boi);
+//        .intake_spec_out(boi2);
         telemetry.addData("righttriggerBOI",gamepad1.right_trigger);
         telemetry.addData("lefttriggerBOI",gamepad1.left_trigger);
     }

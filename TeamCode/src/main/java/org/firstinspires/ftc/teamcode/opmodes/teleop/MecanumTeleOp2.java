@@ -23,11 +23,12 @@ public class MecanumTeleOp2 extends OpMode {
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     @Override
     public void loop(){
-        double x = gamepad1.left_stick_x;
+        double x = gamepad1.left_stick_x * 1.1;
         double y = -gamepad1.left_stick_y;
         double rx = gamepad1.right_stick_x;
 
