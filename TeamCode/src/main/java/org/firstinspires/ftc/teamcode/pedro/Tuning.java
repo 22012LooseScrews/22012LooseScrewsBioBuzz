@@ -11,20 +11,20 @@ import org.firstinspires.ftc.teamcode.pedro.procedures.Tests;
 import org.firstinspires.ftc.teamcode.pedro.procedures.ThreeWheelTuner;
 
 public class Tuning {
-//    @Tuner
-//    public static Procedure ThreeWheelTuner() {
-//        return new ThreeWheelTuner();
-//    }
-//    @Tuner
-//    public static Procedure Tests() {
-//        return new Tests();
-//    }
-//    @Tuner
-//    public static Procedure mecanumTuner() {
-//        return new MecanumTuner();
-//    }
-//    @Tuner
-//    public static Procedure foresightTuner() {
-//        return new ForesightTuner((hardwareMap) -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig), (hardwareMap) -> new Mecanum(hardwareMap, Constants.drivetrainConfig));
-//    }
+    @Tuner
+    public static Procedure ThreeWheelTuner() {
+        return new ThreeWheelTuner();
+    }
+    @Tuner
+    public static Procedure Tests() {
+        return new Tests(hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig),null,null);
+    }
+    @Tuner
+    public static Procedure mecanumTuner() {
+        return new MecanumTuner();
+    }
+    @Tuner
+    public static Procedure foresightTuner() {
+        return new ForesightTuner((hardwareMap) -> new PinpointLocalizer(hardwareMap, Constants.localizerConfig), (hardwareMap) -> new Mecanum(hardwareMap, Constants.drivetrainConfig));
+    }
 }

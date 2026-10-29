@@ -8,7 +8,7 @@ public class IntakeMotor {
     private DcMotor intakeMotor;
     public IntakeMotor(OpMode opMode){
         intakeMotor = opMode.hardwareMap.get(DcMotor.class, "intakeMotor");
-        intakeMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 

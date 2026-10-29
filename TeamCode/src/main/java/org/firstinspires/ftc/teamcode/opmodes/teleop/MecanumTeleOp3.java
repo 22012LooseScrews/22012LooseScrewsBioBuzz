@@ -34,8 +34,8 @@ public class MecanumTeleOp3 extends OpMode {
 
     @Override
     public void loop() {
-        double x = -gamepad1.left_stick_x * 1.1;
-        double y = gamepad1.left_stick_y;
+        double x = gamepad1.left_stick_x * 1.1;
+        double y = -gamepad1.left_stick_y;
         double rx = gamepad1.right_stick_x;
 
         double theta = Math.atan2(x, y);
