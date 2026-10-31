@@ -7,9 +7,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.PollenOuttake;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.NectarOuttake;
 
 @TeleOp
 public class FieldCentricMecanumTeleop extends LinearOpMode {
+    IntakeMotor intakeMotor;
+    PollenOuttake pollenMotor;
+    NectarOuttake nectarMotor;
+
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -18,6 +25,9 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
+        IntakeMotor intakeMotor = new IntakeMotor(this);
+        PollenOuttake pollenMotor = new PollenOuttake(this);
+        NectarOuttake nectarMotor = new NectarOuttake(this);
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -76,6 +86,24 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower);
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
+
+            if(gamepad1.left_bumper){
+                intakeMotor.intake_intake();
+            }
+            else if(gamepad1.right_bumper){
+                intakeMotor.intake_outtake();
+            }
+            else{
+                intakeMotor.intake_stop();
+            }
+
+            if (gamepad1.right_trigger > 0.1) {
+                pollenMotor.outtake_far();
+            } else if (gamepad1.left_trigger > 0.1) {
+                pollenMotor.outtake_close();
+            } else {
+                pollenMotor.outtake_stop();
+            }
         }
     }
 }
