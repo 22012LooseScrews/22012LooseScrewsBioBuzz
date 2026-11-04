@@ -8,13 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.PollenOuttake;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.NectarOuttake;
 
 @TeleOp
 public class FieldCentricMecanumTeleop extends LinearOpMode {
     IntakeMotor intakeMotor;
-    PollenOuttake pollenMotor;
+    OuttakeMotor pollenMotor;
     NectarOuttake nectarMotor;
 
     @Override
@@ -26,7 +26,7 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
         IntakeMotor intakeMotor = new IntakeMotor(this);
-        PollenOuttake pollenMotor = new PollenOuttake(this);
+        OuttakeMotor pollenMotor = new OuttakeMotor(this);
         NectarOuttake nectarMotor = new NectarOuttake(this);
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

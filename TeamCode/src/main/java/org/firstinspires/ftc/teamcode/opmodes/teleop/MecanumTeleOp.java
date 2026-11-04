@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
+import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 
 // Red Alliance Tags - 30-37
 // Blue Alliance Tags - 38-45
@@ -16,6 +17,9 @@ public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor;
     IntakeMotor intakeMotor1;
     OuttakeMotor outtake_motor;
+    PollenServo pollen_servo;
+    LimelightServo limelight_servo;
+    boolean pservoup = false;
     @Override
     public void init() {
         outtake_motor = new OuttakeMotor(this);
@@ -32,6 +36,8 @@ public class MecanumTeleOp extends OpMode {
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor1 = new IntakeMotor(this);
+        pollen_servo = new PollenServo(this);
+        limelight_servo = new LimelightServo(this);
     }
 
     @Override
@@ -62,6 +68,22 @@ public class MecanumTeleOp extends OpMode {
             outtake_motor.outtake_close();
         } else {
             outtake_motor.outtake_stop();
+        }
+
+        if (gamepad1.dpad_up && pservoup) {
+            pollen_servo.pollenServo_down();
+            pservoup = false;
+        }
+        else if(gamepad1.dpad_up) {
+            pollen_servo.pollenServo_up();
+            pservoup = true;
+        }
+
+        if(gamepad1.dpad_left){
+            pollen_servo.pollenServo_down();
+        }
+        else if(gamepad1.dpad_right){
+            pollen_servo.pollenServo_up();
         }
     }
 }
