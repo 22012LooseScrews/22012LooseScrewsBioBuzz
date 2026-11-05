@@ -8,74 +8,64 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.NectarOuttake;
+import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 
 @TeleOp
 public class FieldCentricMecanumTeleop extends LinearOpMode {
-    IntakeMotor intakeMotor;
-    OuttakeMotor pollenMotor;
-    NectarOuttake nectarMotor;
-
+    IntakeMotor intake_motor;
+    OuttakeMotor outtake_motor;
+    PollenServo pollen_servo;
+    LimelightServo limelight_servo;
+    boolean pservoup = false;
     @Override
     public void runOpMode() throws InterruptedException {
-        // Declare our motors
-        // Make sure your ID's match your configuration
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
-        IntakeMotor intakeMotor = new IntakeMotor(this);
-        OuttakeMotor pollenMotor = new OuttakeMotor(this);
-        NectarOuttake nectarMotor = new NectarOuttake(this);
+
+        intake_motor = new IntakeMotor(this);
+        outtake_motor = new OuttakeMotor(this);
+        pollen_servo = new PollenServo(this);
+        limelight_servo = new LimelightServo(this);
 
         frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        // Reverse the right side motors. This may be wrong for your setup.
-        // If your robot moves backwards when commanded to go forwards,
-        // reverse the left side instead.
-        // See the note about this earlier on this page.
+
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        // Retrieve the IMU from the hardware map
         IMU imu = hardwareMap.get(IMU.class, "imu");
-        // Adjust the orientation parameters to match your robot
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.FORWARD,
                 RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
-        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
         imu.initialize(parameters);
+        imu.resetYaw();
 
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
+            double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            // This button choice was made so that it is hard to hit on accident,
-            // it can be freely changed based on preference.
-            // The equivalent button is start on Xbox-style controllers.
             if (gamepad1.options) {
                 imu.resetYaw();
             }
 
             double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
 
-            // Rotate the movement direction counter to the bot's rotation
             double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
             double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
 
-            rotX = rotX * 1.1;  // Counteract imperfect strafing
+            rotX = rotX * 1.1;
 
-            // Denominator is the largest motor power (absolute value) or 1
-            // This ensures all the powers maintain the same ratio,
-            // but only if at least one is out of the range [-1, 1]
             double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
             double frontLeftPower = (rotY + rotX + rx) / denominator;
             double backLeftPower = (rotY - rotX + rx) / denominator;
@@ -88,21 +78,37 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
             backRightMotor.setPower(backRightPower);
 
             if(gamepad1.left_bumper){
-                intakeMotor.intake_intake();
+                intake_motor.intake_intake();
             }
             else if(gamepad1.right_bumper){
-                intakeMotor.intake_outtake();
+                intake_motor.intake_outtake();
             }
             else{
-                intakeMotor.intake_stop();
+                intake_motor.intake_stop();
             }
 
-            if (gamepad1.right_trigger > 0.1) {
-                pollenMotor.outtake_far();
-            } else if (gamepad1.left_trigger > 0.1) {
-                pollenMotor.outtake_close();
+            if (gamepad1.left_trigger > 0.1) {
+                outtake_motor.outtake_close();
+            } else if (gamepad1.right_trigger > 0.1) {
+                outtake_motor.outtake_far();
             } else {
-                pollenMotor.outtake_stop();
+                outtake_motor.outtake_stop();
+            }
+
+            if (gamepad1.dpad_up && pservoup) {
+                pollen_servo.pollenServo_down();
+                pservoup = false;
+            }
+            else if(gamepad1.dpad_up) {
+                pollen_servo.pollenServo_up();
+                pservoup = true;
+            }
+
+            if(gamepad1.dpad_left){
+                pollen_servo.pollenServo_down();
+            }
+            else if(gamepad1.dpad_right){
+                pollen_servo.pollenServo_up();
             }
         }
     }

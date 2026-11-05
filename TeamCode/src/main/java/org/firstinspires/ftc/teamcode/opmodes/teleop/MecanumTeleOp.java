@@ -15,14 +15,13 @@ import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 @TeleOp
 public class MecanumTeleOp extends OpMode {
     DcMotor frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor;
-    IntakeMotor intakeMotor1;
+    IntakeMotor intake_motor;
     OuttakeMotor outtake_motor;
     PollenServo pollen_servo;
     LimelightServo limelight_servo;
     boolean pservoup = false;
     @Override
     public void init() {
-        outtake_motor = new OuttakeMotor(this);
         frontRightMotor = hardwareMap.get(DcMotor.class, "frontRightMotor");
         frontLeftMotor = hardwareMap.get(DcMotor.class, "frontLeftMotor");
         backRightMotor = hardwareMap.get(DcMotor.class, "backRightMotor");
@@ -35,7 +34,9 @@ public class MecanumTeleOp extends OpMode {
         frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeMotor1 = new IntakeMotor(this);
+
+        intake_motor = new IntakeMotor(this);
+        outtake_motor = new OuttakeMotor(this);
         pollen_servo = new PollenServo(this);
         limelight_servo = new LimelightServo(this);
     }
@@ -53,19 +54,19 @@ public class MecanumTeleOp extends OpMode {
         backRightMotor.setPower((y + x - rx) / denominator);
 
         if(gamepad1.left_bumper){
-            intakeMotor1.intake_intake();
+            intake_motor.intake_intake();
         }
         else if(gamepad1.right_bumper){
-            intakeMotor1.intake_outtake();
+            intake_motor.intake_outtake();
         }
         else{
-            intakeMotor1.intake_stop();
+            intake_motor.intake_stop();
         }
 
-        if (gamepad1.right_trigger > 0.1) {
-            outtake_motor.outtake_far();
-        } else if (gamepad1.left_trigger > 0.1) {
+        if (gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
+        } else if (gamepad1.right_trigger > 0.1) {
+            outtake_motor.outtake_far();
         } else {
             outtake_motor.outtake_stop();
         }

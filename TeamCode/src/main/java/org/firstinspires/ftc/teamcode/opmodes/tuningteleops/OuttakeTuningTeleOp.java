@@ -9,9 +9,11 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 
+
 @TeleOp
 public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor;
+    public DcMotorEx outtakeMotor2;
     IntakeMotor intakeMotor;
     private double close_rpm = 1650;
     private double far_rpm = 2000;
