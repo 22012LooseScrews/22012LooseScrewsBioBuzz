@@ -15,24 +15,24 @@ public class OuttakeTuningTeleOp extends OpMode {
     public DcMotorEx outtakeMotor;
     public DcMotorEx outtakeMotor2;
     IntakeMotor intakeMotor;
-    private double close_rpm = 1650;
-    private double far_rpm = 2000;
+    private double close_rpm = 1600;
+    private double far_rpm = 1750;
     double F = 0;
     double P = 0;
-    double current_target_velocity = far_rpm;
+    double current_target_velocity = close_rpm;
     double[] step_sizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
     int step_index = 0;
     @Override
     public void init() {
         outtakeMotor = hardwareMap.get(DcMotorEx.class, "outtakeMotor");
-
+        outtakeMotor2 = hardwareMap.get(DcMotorEx.class, "outtakeMotor2");
         outtakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         outtakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         outtakeMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
+        outtakeMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
         intakeMotor = new IntakeMotor(this);
     }
@@ -67,7 +67,6 @@ public class OuttakeTuningTeleOp extends OpMode {
         if(gamepad1.dpadRightWasPressed()){
             F -= step_sizes[step_index];
         }
-
         if(gamepad1.dpadUpWasPressed()){
             P += step_sizes[step_index];
         }
@@ -78,12 +77,15 @@ public class OuttakeTuningTeleOp extends OpMode {
 
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 0, 0, F);
         outtakeMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
+        outtakeMotor2.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
 
 
         outtakeMotor.setVelocity(current_target_velocity);
+        outtakeMotor2.setVelocity(current_target_velocity);
 
 
         double current_velocity = outtakeMotor.getVelocity();
+        double current_velocity2 = outtakeMotor2.getVelocity();
         double error = current_target_velocity - current_velocity;
 
         telemetry.addData("Target Velocity", current_target_velocity);

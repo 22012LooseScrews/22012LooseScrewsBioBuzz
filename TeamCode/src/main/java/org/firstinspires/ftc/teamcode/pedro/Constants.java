@@ -8,6 +8,7 @@ import com.pedropathing.math.Matrix;
 import com.pedropathing.math.Vector2D;
 import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.pedropathing.revhub.drivetrains.MecanumConfig;
+import com.pedropathing.revhub.localizers.Encoder;
 import com.pedropathing.revhub.localizers.PinpointConfig;
 import com.pedropathing.revhub.localizers.ThreeWheelConfig;
 import com.pedropathing.revhub.localizers.ThreeWheelLocalizer;
@@ -19,10 +20,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class Constants {
     public static MecanumConfig drivetrainConfig = new MecanumConfig(
             c -> {
-                c.frontLeftName.set("frontLeftMotor");
-                c.backLeftName.set("backLeftMotor");
-                c.frontRightName.set("frontRightMotor");
-                c.backRightName.set("backRightMotor");
+                c.frontLeftName.set("lf");
+                c.backLeftName.set("lr");
+                c.frontRightName.set("rf");
+                c.backRightName.set("rr");
                 c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
                 c.frontRightDirection.set(DcMotorSimple.Direction.REVERSE);
                 c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
@@ -40,15 +41,20 @@ public class Constants {
 //                c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 //            }
 //    );
-    public static PinpointConfig localizerConfig = new PinpointConfig(
-            c -> {
-                c.name.set("pinpoint");
-                c.xPodOffset.set(2.187);
-                c.yPodOffset.set(-4.572);
-                c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
-                c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
-            }
-    );
+    public static ThreeWheelConfig localizerConfig = new ThreeWheelConfig(c -> {
+        c.leftEncoderName.set("lf");
+        c.rightEncoderName.set("rr");
+        c.strafeEncoderName.set("lr");
+        c.leftPodY.set(7.3324880906225545);
+        c.rightPodY.set(-6.342893654284258);
+        c.strafePodX.set(-6.710197127039797E-4);
+        c.forwardTicksToInches.set(0.002129385350160356);
+        c.strafeTicksToInches.set(12.0);
+        c.turnTicksToRadians.set(0.0021080705998447564);
+        c.leftEncoderDirection.set(Encoder.FORWARD);
+        c.rightEncoderDirection.set(Encoder.REVERSE);
+        c.strafeEncoderDirection.set(Encoder.REVERSE);
+    });
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.3);
@@ -71,7 +77,7 @@ public class Constants {
     );
     public static Follower create(HardwareMap h) {
         return new Follower(
-                new PinpointLocalizer(h, localizerConfig),
+                new ThreeWheelLocalizer(h, localizerConfig),
                 new Mecanum(h, drivetrainConfig),
                 new Foresight(foresightConfig)
         );

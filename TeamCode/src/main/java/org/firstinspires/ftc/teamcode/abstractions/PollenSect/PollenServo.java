@@ -12,10 +12,10 @@ public class PollenServo {
         pollenServo.setDirection(Servo.Direction.FORWARD);
     }
     public void pollenServo_up() {
-        pollenServo.setPosition(0);
+        pollenServo.setPosition(0.5);
     }
     public void pollenServo_down() {
-        pollenServo.setPosition(1);
+        pollenServo.setPosition(0.75);
     }
     public void pollenServo_zero() {
         pollenServo.setPosition(0);
