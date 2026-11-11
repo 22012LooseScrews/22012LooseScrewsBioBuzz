@@ -1,7 +1,5 @@
-package org.firstinspires.ftc.teamcode.abstractions.OuttakeSect;
+package org.firstinspires.ftc.teamcode.abstractions.IntakeSect;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 

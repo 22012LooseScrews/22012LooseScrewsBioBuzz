@@ -11,7 +11,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.HoodServo;
+import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.HoodServo;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 

@@ -45,21 +45,21 @@ public class Constants {
         c.leftEncoderName.set("lf");
         c.rightEncoderName.set("rr");
         c.strafeEncoderName.set("lr");
-        c.leftPodY.set(7.3324880906225545);
+        c.leftPodY.set(7.728084989112838);
         c.rightPodY.set(-6.342893654284258);
         c.strafePodX.set(-6.115732862126202);
-        c.forwardTicksToInches.set(0.002129385350160356);
+        c.forwardTicksToInches.set(0.0019875968095058975);
         c.strafeTicksToInches.set(0.001987464690747482);
         c.turnTicksToRadians.set(0.0021080705998447564);
         c.leftEncoderDirection.set(Encoder.FORWARD);
         c.rightEncoderDirection.set(Encoder.REVERSE);
-        c.strafeEncoderDirection.set(Encoder.REVERSE);
+        c.strafeEncoderDirection.set(Encoder.FORWARD);
     });
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.5168525231401863);
                 Controller secondaryTranslationalForward = Controller.proportional(0.19096319674652792);
-                Controller primaryTranslationalLateral = Controller.proportional(1.674417035358147);
+                Controller primaryTranslationalLateral = Controller.proportional(0.674417035358147);
                 Controller secondaryTranslationalLateral = Controller.proportional(0.6186523533176392);
 
                 c.forwardTranslational.set(Controller.piecewise(secondaryTranslationalForward).put(2.5, primaryTranslationalForward));
@@ -68,7 +68,7 @@ public class Constants {
                 c.coast.set(Controller.proportionalFeedforward(0.010087507203880004));
                 c.brake.set(Controller.proportionalFeedforward(0.008574381123298003));
 
-                c.headingFeedback.set(Controller.proportional(18.850337719462615));
+                c.headingFeedback.set(Controller.proportional(3.750337719462615));
                 c.headingBrakeCoefficients.set(Vector2D.cartesian(0.07210790975283332, 0.008346921568181913));
 
                 c.linearBrakeCoefficients.set(Matrix.diag(0.11701231082182693, 0.20437049210383426));

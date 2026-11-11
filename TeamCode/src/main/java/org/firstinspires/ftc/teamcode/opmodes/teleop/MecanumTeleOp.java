@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
-import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.HoodServo;
+import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.HoodServo;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
@@ -48,7 +48,7 @@ public class MecanumTeleOp extends OpMode {
 
     @Override
     public void loop(){
-        double x = gamepad1.left_stick_x * 1.1;
+        double x = gamepad1.left_stick_x * 1.1 ;
         double y = -gamepad1.left_stick_y;
         double rx = gamepad1.right_stick_x;
 

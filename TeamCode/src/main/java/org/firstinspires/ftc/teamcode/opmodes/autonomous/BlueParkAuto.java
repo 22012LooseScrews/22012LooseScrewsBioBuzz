@@ -29,13 +29,19 @@ public class BlueParkAuto extends LinearOpMode {
     private final Pose park = poseFactory.of(130.7988, 20.1166, 180);
     private final Pose park_control = poseFactory.of(67.5199, 21.2832, 0);
 
-    Command auto = sequential(
+    public Command auto() {
+        return sequential(
             follow(follower, shoot1()),
-            instant(() -> outtakeMotor.outtake_close()),
+
+            instant(() ->outtakeMotor.outtake_close()),
+
             waitMs(2500),
-            instant(() -> outtakeMotor.outtake_stop()),
+
+            instant(() ->outtakeMotor.outtake_stop()),
+
             follow(follower, park())
-    );
+        );
+    }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,7 +51,7 @@ public class BlueParkAuto extends LinearOpMode {
         follower.update();
 
         waitForStart();
-        schedule(auto);
+        schedule(auto());
 
         while(opModeIsActive()){
             follower.update();
