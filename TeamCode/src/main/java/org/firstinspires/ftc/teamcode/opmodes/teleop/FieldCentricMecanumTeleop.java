@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,6 +11,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
+import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.HoodServo;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 
@@ -17,27 +20,29 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
     IntakeMotor intake_motor;
     OuttakeMotor outtake_motor;
     PollenServo pollen_servo;
+    HoodServo hood_servo;
     LimelightServo limelight_servo;
     boolean pservoup = false;
     @Override
     public void runOpMode() throws InterruptedException {
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
-        DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
-        DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
-        DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
+        DcMotor lf = hardwareMap.dcMotor.get("lf");
+        DcMotor lr = hardwareMap.dcMotor.get("lr");
+        DcMotor rf = hardwareMap.dcMotor.get("rf");
+        DcMotor rr = hardwareMap.dcMotor.get("rr");
 
         intake_motor = new IntakeMotor(this);
         outtake_motor = new OuttakeMotor(this);
         pollen_servo = new PollenServo(this);
         limelight_servo = new LimelightServo(this);
+        hood_servo = new HoodServo(this);
 
-        frontRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lf.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        rf.setDirection(DcMotorSimple.Direction.REVERSE);
+        rr.setDirection(DcMotorSimple.Direction.REVERSE);
 
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -45,6 +50,8 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
                 RevHubOrientationOnRobot.UsbFacingDirection.LEFT));
         imu.initialize(parameters);
         imu.resetYaw();
+
+        TelemetryManager panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
 
         waitForStart();
 
@@ -72,10 +79,10 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
             double frontRightPower = (rotY - rotX - rx) / denominator;
             double backRightPower = (rotY + rotX - rx) / denominator;
 
-            frontLeftMotor.setPower(frontLeftPower);
-            backLeftMotor.setPower(backLeftPower);
-            frontRightMotor.setPower(frontRightPower);
-            backRightMotor.setPower(backRightPower);
+            lf.setPower(frontLeftPower);
+            lr.setPower(backLeftPower);
+            rf.setPower(frontRightPower);
+            rr.setPower(backRightPower);
 
             if(gamepad1.left_bumper){
                 intake_motor.intake_intake();
@@ -95,21 +102,34 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
                 outtake_motor.outtake_stop();
             }
 
-            if (gamepad1.dpad_up && pservoup) {
-                pollen_servo.pollenServo_down();
-                pservoup = false;
+            if (gamepad1.dpad_left) {
+                hood_servo.hoodServo_up();
+//                pservoup = false;
             }
-            else if(gamepad1.dpad_up) {
-                pollen_servo.pollenServo_up();
-                pservoup = true;
+            else if(gamepad1.dpad_right) {
+                hood_servo.hoodServo_down();
+//                pservoup = true;
             }
 
-            if(gamepad1.dpad_left){
+            if(gamepad1.dpad_down){
                 pollen_servo.pollenServo_down();
             }
-            else if(gamepad1.dpad_right){
+            else if(gamepad1.dpad_up){
                 pollen_servo.pollenServo_up();
             }
+
+            if(gamepad1.cross){
+                limelight_servo.limelightServo_up();
+            }
+            else if(gamepad1.triangle){
+                limelight_servo.limelightServo_down();
+            }
+            telemetry.addData("Servo: ", pservoup);
+            telemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
+            panelsTelemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
+            panelsTelemetry.update();
+            telemetry.update();
+
         }
     }
 }

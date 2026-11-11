@@ -19,7 +19,7 @@ public class OuttakeTuningTeleOp extends OpMode {
     private double far_rpm = 1750;
     double F = 0;
     double P = 0;
-    double current_target_velocity = close_rpm;
+    double current_target_velocity = 1700;
     double[] step_sizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
     int step_index = 0;
     @Override

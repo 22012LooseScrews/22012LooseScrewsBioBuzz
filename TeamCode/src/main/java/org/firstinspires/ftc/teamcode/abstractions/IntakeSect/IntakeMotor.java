@@ -13,7 +13,7 @@ public class IntakeMotor {
     }
 
     public void intake_intake(){
-        intakeMotor.setPower(0.85);
+        intakeMotor.setPower(0.95);
     }
     public void intake_outtake(){
         intakeMotor.setPower(-0.85);

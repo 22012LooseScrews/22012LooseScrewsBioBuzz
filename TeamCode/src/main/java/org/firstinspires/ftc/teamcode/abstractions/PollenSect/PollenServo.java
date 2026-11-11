@@ -11,11 +11,11 @@ public class PollenServo {
         pollenServo = opMode.hardwareMap.get(Servo.class, "pollenServo");
         pollenServo.setDirection(Servo.Direction.FORWARD);
     }
-    public void pollenServo_up() {
-        pollenServo.setPosition(0.5);
-    }
     public void pollenServo_down() {
-        pollenServo.setPosition(0.75);
+        pollenServo.setPosition(0.55);
+    }
+    public void pollenServo_up() {
+        pollenServo.setPosition(0.8);
     }
     public void pollenServo_zero() {
         pollenServo.setPosition(0);
@@ -24,4 +24,3 @@ public class PollenServo {
         pollenServo.setPosition(1);
     }
 }
-

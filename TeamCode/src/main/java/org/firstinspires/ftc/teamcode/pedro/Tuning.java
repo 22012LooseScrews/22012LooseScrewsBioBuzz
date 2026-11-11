@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedro;
 
 import com.pedropathing.revhub.drivetrains.Mecanum;
-import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.pedropathing.revhub.localizers.ThreeWheelLocalizer;
 import com.pedropathing.tuning.autotune.Procedure;
 import com.pedropathing.tuning.autotune.Tuner;
@@ -18,7 +17,7 @@ public class Tuning {
     }
     @Tuner
     public static Procedure Tests() {
-        return new Tests(hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig),null,null);
+        return new Tests(hardwareMap -> new Mecanum(hardwareMap, Constants.drivetrainConfig),(hardwareMap -> new ThreeWheelLocalizer(hardwareMap, Constants.localizerConfig)),null);
     }
     @Tuner
     public static Procedure mecanumTuner() {

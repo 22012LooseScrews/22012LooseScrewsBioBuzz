@@ -9,8 +9,8 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
     private DcMotorEx outtakeMotor2;
 //    private final double auto_close_rpm = 1575;
-    private final double close_rpm = 1600;
-    private final double far_rpm = 1750;
+    private final double close_rpm = 1750;
+    private final double far_rpm = 1760;
 
     public OuttakeMotor(OpMode opMode) {
         outtakeMotor = opMode.hardwareMap.get(DcMotorEx.class, "outtakeMotor");
@@ -44,22 +44,22 @@ public class OuttakeMotor {
 //        outtakeMotor.setVelocity(-auto_close_rpm);
 //    }
     public void outtake_close() {
-//        outtakeMotor.setVelocityPIDFCoefficients(
-//                80,
-//                0,
-//                0,
-//                13.0
-//        );
+        outtakeMotor.setVelocityPIDFCoefficients(
+                200,
+                0,
+                0,
+                14.8
+        );
 //        outtakeMotor.setVelocity(-close_rpm);
         outtakeMotor.setVelocity(close_rpm);
         outtakeMotor2.setVelocity(close_rpm);
     }
     public void outtake_far() {
          outtakeMotor.setVelocityPIDFCoefficients(
-                70,
+                210,
                 0,
                 0,
-                11
+                15
         );
 //        outtakeMotor.setVelocity(-far_rpm);
         outtakeMotor.setVelocity(far_rpm);
@@ -70,7 +70,7 @@ public class OuttakeMotor {
         outtakeMotor2.setVelocity(0);
     }
     public double getVel(){
-        return outtakeMotor.getVelocity();
+        return (outtakeMotor.getVelocity()+outtakeMotor2.getVelocity())/2;
     }
     public void outtake_spec(float x) {
         outtakeMotor.setPower(x);
