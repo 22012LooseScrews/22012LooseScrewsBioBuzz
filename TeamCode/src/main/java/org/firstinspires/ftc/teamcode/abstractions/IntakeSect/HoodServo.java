@@ -10,10 +10,10 @@ public class HoodServo {
         hoodServo.setDirection(Servo.Direction.FORWARD);
     }
     public void hoodServo_up() {
-        hoodServo.setPosition(0.5);
+        hoodServo.setPosition(1);
     }
     public void hoodServo_down() {
-        hoodServo.setPosition(0.85);
+        hoodServo.setPosition(0.61);
     }
     public void hoodServo_zero() {
         hoodServo.setPosition(0);

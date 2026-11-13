@@ -59,8 +59,8 @@ public class Constants {
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.5168525231401863);
                 Controller secondaryTranslationalForward = Controller.proportional(0.19096319674652792);
-                Controller primaryTranslationalLateral = Controller.proportional(0.674417035358147);
-                Controller secondaryTranslationalLateral = Controller.proportional(0.6186523533176392);
+                    Controller primaryTranslationalLateral = Controller.proportional(0.33720851767);
+                Controller secondaryTranslationalLateral = Controller.proportional(0.30932617665);
 
                 c.forwardTranslational.set(Controller.piecewise(secondaryTranslationalForward).put(2.5, primaryTranslationalForward));
                 c.strafeTranslational.set(Controller.piecewise(secondaryTranslationalLateral).put(2.5, primaryTranslationalLateral));

@@ -9,7 +9,7 @@ public class OuttakeMotor {
     private DcMotorEx outtakeMotor;
     private DcMotorEx outtakeMotor2;
 //    private final double auto_close_rpm = 1575;
-    private final double close_rpm = 1750;
+    private final double close_rpm = 1720;
     private final double far_rpm = 1760;
 
     public OuttakeMotor(OpMode opMode) {
@@ -56,10 +56,10 @@ public class OuttakeMotor {
     }
     public void outtake_far() {
          outtakeMotor.setVelocityPIDFCoefficients(
-                210,
+                120,
                 0,
                 0,
-                15
+                13.5
         );
 //        outtakeMotor.setVelocity(-far_rpm);
         outtakeMotor.setVelocity(far_rpm);

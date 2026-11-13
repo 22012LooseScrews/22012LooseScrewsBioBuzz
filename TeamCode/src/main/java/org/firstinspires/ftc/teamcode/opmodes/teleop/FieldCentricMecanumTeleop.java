@@ -23,6 +23,7 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
     HoodServo hood_servo;
     LimelightServo limelight_servo;
     boolean pservoup = false;
+    boolean hoodservoup = false;
     @Override
     public void runOpMode() throws InterruptedException {
         DcMotor lf = hardwareMap.dcMotor.get("lf");
@@ -104,18 +105,20 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
 
             if (gamepad1.dpad_left) {
                 hood_servo.hoodServo_up();
-//                pservoup = false;
+                hoodservoup = false;
             }
             else if(gamepad1.dpad_right) {
                 hood_servo.hoodServo_down();
-//                pservoup = true;
+                hoodservoup = true;
             }
 
             if(gamepad1.dpad_down){
                 pollen_servo.pollenServo_down();
+                pservoup = false;
             }
             else if(gamepad1.dpad_up){
                 pollen_servo.pollenServo_up();
+                pservoup = true;
             }
 
             if(gamepad1.cross){
@@ -125,11 +128,13 @@ public class FieldCentricMecanumTeleop extends LinearOpMode {
                 limelight_servo.limelightServo_down();
             }
             telemetry.addData("Servo: ", pservoup);
-            telemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
+            telemetry.addData("Hood: ", hoodservoup);
+            telemetry.addData("Outtake Velocity: ", outtake_motor.getVel());
+            panelsTelemetry.addData("Servo: ", pservoup);
+            panelsTelemetry.addData("Hood", hoodservoup);
             panelsTelemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
             panelsTelemetry.update();
             telemetry.update();
-
         }
     }
 }

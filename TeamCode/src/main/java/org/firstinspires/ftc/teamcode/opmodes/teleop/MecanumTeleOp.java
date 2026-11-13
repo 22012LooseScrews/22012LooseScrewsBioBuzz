@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.bylazar.telemetry.PanelsTelemetry;
+import com.bylazar.telemetry.TelemetryManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,9 +23,9 @@ public class MecanumTeleOp extends OpMode {
     PollenServo pollen_servo;
     HoodServo hood_servo;
     LimelightServo limelight_servo;
+    TelemetryManager panelsTelemetry;
     boolean pservoup = false;
-    boolean hoodup = false;
-
+    boolean hoodservoup = false;
     @Override
     public void init() {
         rf = hardwareMap.get(DcMotor.class, "rf");
@@ -44,11 +46,13 @@ public class MecanumTeleOp extends OpMode {
         pollen_servo = new PollenServo(this);
         hood_servo = new HoodServo(this);
         limelight_servo = new LimelightServo(this);
+
+        panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
     }
 
     @Override
-    public void loop(){
-        double x = gamepad1.left_stick_x * 1.1 ;
+    public void loop() {
+        double x = gamepad1.left_stick_x * 1.1;
         double y = -gamepad1.left_stick_y;
         double rx = gamepad1.right_stick_x;
 
@@ -58,13 +62,11 @@ public class MecanumTeleOp extends OpMode {
         rf.setPower((y - x - rx) / denominator);
         rr.setPower((y + x - rx) / denominator);
 
-        if(gamepad1.left_bumper){
+        if (gamepad1.left_bumper) {
             intake_motor.intake_intake();
-        }
-        else if(gamepad1.right_bumper){
+        } else if (gamepad1.right_bumper) {
             intake_motor.intake_outtake();
-        }
-        else{
+        } else {
             intake_motor.intake_stop();
         }
 
@@ -102,43 +104,46 @@ public class MecanumTeleOp extends OpMode {
 //        }
 //
 //        if (gamepad1.dpadLeftWasPressed() && !hoodup) {
-//            hood_servo.hoodServo_up();
-//            hoodup = true;
-//        }
-//        else if(gamepad1.dpadLeftWasPressed() && hoodup) {
 //            hood_servo.hoodServo_down();
+//            hoodup = true;
+//        } else if (gamepad1.dpadLeftWasPressed() && hoodup) {
+//            hood_servo.hoodServo_up();
 //            hoodup = false;
-//        }
+////        }
 //        if(gamepad1.dpad_down){
-//            pollen_servo.pollenServo_down();
+//            pol  len_servo.pollenServo_down();
 //        }
 //        else if(gamepad1.dpad_up){
 //            pollen_servo.pollenServo_up();
 //        }
-        if(gamepad1.cross){
-            limelight_servo.limelightServo_up();
-        }
-        else if(gamepad1.triangle){
-            limelight_servo.limelightServo_down();
-        }
+            if (gamepad1.cross) {
+                limelight_servo.limelightServo_up();
+            } else if (gamepad1.triangle) {
+                limelight_servo.limelightServo_down();
+            }
 
-        if (gamepad1.dpad_left) {
-            hood_servo.hoodServo_up();
-//                pservoup = false;
-        }
-        else if(gamepad1.dpad_right) {
-            hood_servo.hoodServo_down();
-//                pservoup = true;
-        }
+            if (gamepad1.dpad_left) {
+                hood_servo.hoodServo_up();
+                 hoodservoup = true;
+            } else if (gamepad1.dpad_right) {
+                hood_servo.hoodServo_down();
+                hoodservoup = false;
+            }
 
-        if(gamepad1.dpad_down){
-            pollen_servo.pollenServo_down();
+            if (gamepad1.dpad_down) {
+                pollen_servo.pollenServo_down();
+                pservoup = false;
+            } else if (gamepad1.dpad_up) {
+                pollen_servo.pollenServo_up();
+                pservoup = true;
+            }
+            telemetry.addData("Servo: ", pservoup);
+            telemetry.addData("Hood: ", hoodservoup);
+            telemetry.addData("Outtake Velocity: ", outtake_motor.getVel());
+            panelsTelemetry.addData("Servo: ", pservoup);
+            panelsTelemetry.addData("Hood", hoodservoup);
+            panelsTelemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
+            panelsTelemetry.update();
+            telemetry.update();
         }
-        else if(gamepad1.dpad_up){
-            pollen_servo.pollenServo_up();
-        }
-
-//        telemetry.addData("Servo: ", pservoup);
-//        telemetry.addData("Hood: ", hoodup);
     }
-}
