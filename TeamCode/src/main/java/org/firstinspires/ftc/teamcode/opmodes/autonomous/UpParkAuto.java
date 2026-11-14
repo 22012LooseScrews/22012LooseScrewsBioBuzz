@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 @Autonomous
-public class BlueParkAuto extends LinearOpMode {
+public class UpParkAuto extends LinearOpMode {
     OuttakeMotor outtake_motor;
     IntakeMotor intake_motor;
     PollenServo pollen_servo;
@@ -30,7 +30,7 @@ public class BlueParkAuto extends LinearOpMode {
     private final Pose start = poseFactory.of(110, 8, 90);
     private final Pose shoot1 = poseFactory.of(112.18, 22.3569, 132.5);
     private final Pose park_start = poseFactory.of(112.18, 22.3569, 132.5);
-    private final Pose park = poseFactory.of(132.3957, 22.4232, 0);
+    private final Pose park = poseFactory.of(132.3957, 48.7, 0);
 
     public Command shootfar() {
         return sequential(
@@ -47,11 +47,11 @@ public class BlueParkAuto extends LinearOpMode {
 
     public Command auto() {
         return sequential(
-            follow(follower, shoot1()),
-            instant(() ->outtake_motor.outtake_close()),
-            waitMs(2500),
-            instant(() ->outtake_motor.outtake_stop()),
-            follow(follower, park())
+                follow(follower, shoot1()),
+                instant(() ->outtake_motor.outtake_close()),
+                waitMs(2500),
+                instant(() ->outtake_motor.outtake_stop()),
+                follow(follower, park())
         );
     }
 
@@ -85,7 +85,7 @@ public class BlueParkAuto extends LinearOpMode {
     }
 
     public Path shoot1() {
-        return Paths.curve(start, shoot1).linear(start, shoot1);
+        return Paths.line(start, shoot1).linear(start, shoot1);
     }
 
     public Path park() {

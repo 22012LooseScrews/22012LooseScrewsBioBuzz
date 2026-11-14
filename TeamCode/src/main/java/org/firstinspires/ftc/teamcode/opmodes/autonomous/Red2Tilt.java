@@ -52,8 +52,8 @@ public class Red2Tilt extends LinearOpMode {
     private final Pose point5Start = poseFactory.of(30.681, 122.5143, 300);
     private final Pose point5 = poseFactory.of(46.5916, 124.4168, 90);
     private final Pose point6Start = poseFactory.of(46.5916, 124.4168, 90);
-    private final Pose point6 = poseFactory.of(46.5223, 128.9492, 90);
-    private final Pose point7Start = poseFactory.of(46.5223, 128.9492, 90);
+    private final Pose point6 = poseFactory.of(46.5223, 130, 90);
+    private final Pose point7Start = poseFactory.of(46.5223, 130, 90);
     private final Pose point7 = poseFactory.of(30.8285, 122.1844, 302);
     private final Pose point7Control1 = poseFactory.of(42.808, 114.4799, 0);
     private final Pose point8 = poseFactory.of(13.9338, 116.1762, 180);
@@ -61,13 +61,13 @@ public class Red2Tilt extends LinearOpMode {
     // Autonomous routine
     public Command shootfar() {
         return sequential(
+            instant(() -> hood_servo.hoodServo_up()),
             instant(() -> outtake_motor.outtake_far()),
             instant(() -> pollen_servo.pollenServo_up()),
-            waitMs(3000),
+            waitMs(2500),
             instant(() -> intake_motor.intake_intake()),
             waitMs(2000),
-            instant(() -> outtake_motor.outtake_stop()),
-            instant(()-> intake_motor.intake_stop())
+            instant(() -> outtake_motor.outtake_stop())
         );
     }
     public Command intakeflower1() {
@@ -110,18 +110,18 @@ public class Red2Tilt extends LinearOpMode {
                 intakeflower1(),
 
                 //shoot2
+                instant(() -> hood_servo.hoodServo_up()),
                 follow(follower, path4()),
 
                 shootfar(),
 
+                instant(() -> hood_servo.hoodServo_down()),
                 //intake2
                 follow(follower, path5()),
                 intakeflower2(),
-
                 //shoot3
                 follow(follower, path7()),
                 shootfar(),
-
                 //park
                 follow(follower, path8())
         );
