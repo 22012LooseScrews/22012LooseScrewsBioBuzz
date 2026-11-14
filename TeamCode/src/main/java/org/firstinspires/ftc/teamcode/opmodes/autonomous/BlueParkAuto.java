@@ -16,35 +16,49 @@ import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 @Autonomous
 public class BlueParkAuto extends LinearOpMode {
-    OuttakeMotor outtakeMotor = new OuttakeMotor(this);
+    OuttakeMotor outtake_motor;
+    IntakeMotor intake_motor;
+    PollenServo pollen_servo;
     private Follower follower;
     private final PoseFactory poseFactory = PoseFactory.degrees();
-    private final Pose start = poseFactory.of(79, 8, 90);
-    private final Pose shoot1 = poseFactory.of(83.3527, 12.9877, 90);
-    private final Pose park_start = poseFactory.of(83.3527, 12.9877, 90);
-    private final Pose park = poseFactory.of(130.7988, 20.1166, 180);
-    private final Pose park_control = poseFactory.of(67.5199, 21.2832, 0);
+    private final Pose start = poseFactory.of(110, 8, 90);
+    private final Pose shoot1 = poseFactory.of(112.18, 22.3569, 132.5);
+    private final Pose park_start = poseFactory.of(112.18, 22.3569, 132.5);
+    private final Pose park = poseFactory.of(132.3957, 22.4232, 0);
+
+    public Command shootfar() {
+        return sequential(
+                waitMs(5000),
+                instant(() -> outtake_motor.outtake_far()),
+                instant(() -> pollen_servo.pollenServo_up()),
+                waitMs(3000),
+                instant(() -> intake_motor.intake_intake()),
+                waitMs(2000),
+                instant(() -> outtake_motor.outtake_stop()),
+                instant(()-> intake_motor.intake_stop())
+        );
+    }
 
     public Command auto() {
         return sequential(
             follow(follower, shoot1()),
-
-            instant(() ->outtakeMotor.outtake_close()),
-
+            instant(() ->outtake_motor.outtake_close()),
             waitMs(2500),
-
-            instant(() ->outtakeMotor.outtake_stop()),
-
+            instant(() ->outtake_motor.outtake_stop()),
             follow(follower, park())
         );
     }
 
     @Override
     public void runOpMode() throws InterruptedException {
+        intake_motor = new IntakeMotor(this);
+        outtake_motor = new OuttakeMotor(this);
         Scheduler.reset();
         follower = Constants.create(hardwareMap);
         follower.setPose(start);
@@ -71,10 +85,10 @@ public class BlueParkAuto extends LinearOpMode {
     }
 
     public Path shoot1() {
-        return Paths.line(start, shoot1).linear(start, shoot1);
+        return Paths.curve(start, shoot1).linear(start, shoot1);
     }
 
     public Path park() {
-        return Paths.curve(park_start, park_control, park).linear(park_start, park);
+        return Paths.line(park_start, park).linear(park_start, park);
     }
 }

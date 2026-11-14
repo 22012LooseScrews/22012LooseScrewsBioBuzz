@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
-import static com.pedropathing.api.Paths.*;
 import com.pedropathing.api.Paths;
 
 import com.pedropathing.api.PoseFactory;
@@ -57,7 +56,7 @@ public class Red2Tilt extends LinearOpMode {
     private final Pose point7Start = poseFactory.of(46.5223, 128.9492, 90);
     private final Pose point7 = poseFactory.of(30.8285, 122.1844, 302);
     private final Pose point7Control1 = poseFactory.of(42.808, 114.4799, 0);
-    private final Pose point8 = poseFactory.of(13.9338, 116.1762, 28.2648);
+    private final Pose point8 = poseFactory.of(13.9338, 116.1762, 180);
 
     // Autonomous routine
     public Command shootfar() {
@@ -186,7 +185,6 @@ public class Red2Tilt extends LinearOpMode {
     }
     public Path jerk1() {return Paths.line(jerk1start,jerk1).linear(jerk1start,jerk1);}
     public Path jerk2() {return Paths.line(jerk2start,jerk2).linear(jerk2start,jerk2);}
-
     public Path path4() {
         return Paths.curve(point4Start, point4Control1, point4).linear(point4Start, point4);
     }
@@ -204,6 +202,6 @@ public class Red2Tilt extends LinearOpMode {
     }
 
     public Path path8() {
-        return Paths.line(point7, point8).reverseTangent();
+        return Paths.line(point7, point8).linear(point7, point8);
     }
 }
