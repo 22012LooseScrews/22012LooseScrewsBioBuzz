@@ -12,11 +12,16 @@ import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.HoodServo;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
+import org.firstinspires.ftc.teamcode.pedro.Constants;
+
+import com.pedropathing.follower.Follower;
+import com.pedropathing.math.Pose;
 
 // Red Alliance Tags - 30-37
 // Blue Alliance Tags - 38-45
+
 @TeleOp
-public class MecanumTeleOp extends OpMode {
+public class RedOdoMecanumTeleOp extends OpMode {
     DcMotor rf, lf, rr, lr;
     IntakeMotor intake_motor;
     OuttakeMotor outtake_motor;
@@ -24,6 +29,10 @@ public class MecanumTeleOp extends OpMode {
     HoodServo hood_servo;
     LimelightServo limelight_servo;
     TelemetryManager panelsTelemetry;
+//    private Limelight3A limelight;
+    private static final double kp_turn = 0.03;
+    private static final double max_speed = 1.0;
+    private Follower follower;
     boolean pservoup = false;
     boolean hoodservoup = false;
     @Override
@@ -48,13 +57,47 @@ public class MecanumTeleOp extends OpMode {
         limelight_servo = new LimelightServo(this);
 
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
+        follower = Constants.create(hardwareMap);
+
+//        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+//        limelight.pipelineSwitch(0);
+
     }
+//    @Override
+//    public void start() {
+//        limelight.start();
+//    }
 
     @Override
     public void loop() {
         double x = gamepad1.left_stick_x * 1.1;
         double y = -gamepad1.left_stick_y;
         double rx = gamepad1.right_stick_x;
+        follower.update();
+
+        Pose currentPose = follower.pose();
+
+        double robotX = currentPose.x();
+        double robotY = currentPose.y();
+        double robotHeading = currentPose.heading();
+//        double final_rx = rx;
+//
+//        LLResult ll_result = limelight.getLatestResult();
+//        if(ll_result != null && ll_result.isValid()){
+//            double tx = ll_result.getTx();
+//            if(gamepad1.left_trigger > 0.1){
+//                telemetry.addLine("Apriltag Detected - Aligning Close");
+//                double close_turn_error = tx;
+//                double close_turn_power = close_turn_error * kp_turn;
+//                final_rx = Math.min(Math.abs(close_turn_power), max_speed) * Math.signum(close_turn_power);
+//            }
+//            else if(gamepad1.right_trigger > 0.1){
+//                telemetry.addLine("Apriltag Detected - Aligning Far");
+//                double far_turn_error = tx;
+//                double far_turn_power = far_turn_error * kp_turn;
+//                final_rx = Math.min(Math.abs(far_turn_power), max_speed) * Math.signum(far_turn_power);
+//            }
+//        }
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         lf.setPower((y + x + rx) / denominator);
@@ -72,6 +115,22 @@ public class MecanumTeleOp extends OpMode {
 
         if (gamepad1.left_trigger > 0.1) {
             outtake_motor.outtake_close();
+            Pose pose = follower.pose();
+
+            double targetY = pose.y() > 70 ? 86 : 56;
+
+            double errorX = 57 - pose.x();
+            double errorY = targetY - pose.y();
+
+            double targetAngle = Math.atan2(errorY, errorX);
+            double turnError = targetAngle - pose.heading();
+
+// Normalize angle
+            turnError = Math.atan2(Math.sin(turnError), Math.cos(turnError));
+
+            double turn = turnError * 0.5;
+            double drive = Math.hypot(errorX, errorY) * 0.03;
+
         } else if (gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
         } else {
@@ -116,34 +175,35 @@ public class MecanumTeleOp extends OpMode {
 //        else if(gamepad1.dpad_up){
 //            pollen_servo.pollenServo_up();
 //        }
-            if (gamepad1.cross) {
-                limelight_servo.limelightServo_up();
-            } else if (gamepad1.triangle) {
-                limelight_servo.limelightServo_down();
-            }
-
-            if (gamepad1.dpad_left) {
-                hood_servo.hoodServo_up();
-                 hoodservoup = true;
-            } else if (gamepad1.dpad_right) {
-                hood_servo.hoodServo_down();
-                hoodservoup = false;
-            }
-
-            if (gamepad1.dpad_down) {
-                pollen_servo.pollenServo_down();
-                pservoup = false;
-            } else if (gamepad1.dpad_up) {
-                pollen_servo.pollenServo_up();
-                pservoup = true;
-            }
-            telemetry.addData("Servo: ", pservoup);
-            telemetry.addData("Hood: ", hoodservoup);
-            telemetry.addData("Outtake Velocity: ", outtake_motor.getVel());
-            panelsTelemetry.addData("Servo: ", pservoup);
-            panelsTelemetry.addData("Hood", hoodservoup);
-            panelsTelemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
-            panelsTelemetry.update();
-            telemetry.update();
+        if (gamepad1.cross) {
+            limelight_servo.limelightServo_up();
+        } else if (gamepad1.triangle) {
+            limelight_servo.limelightServo_down();
         }
+
+        if (gamepad1.dpad_left) {
+            hood_servo.hoodServo_up();
+            hoodservoup = true;
+        } else if (gamepad1.dpad_right) {
+            hood_servo.hoodServo_down();
+            hoodservoup = false;
+        }
+
+        if (gamepad1.dpad_down) {
+            pollen_servo.pollenServo_down();
+            pservoup = false;
+        } else if (gamepad1.dpad_up) {
+            pollen_servo.pollenServo_up();
+            pservoup = true;
+        }
+        telemetry.addData("Servo: ", pservoup);
+        telemetry.addData("Hood: ", hoodservoup);
+        telemetry.addData("Outtake Velocity: ", outtake_motor.getVel());
+        telemetry.addData("Pose",currentPose);
+        panelsTelemetry.addData("Servo: ", pservoup);
+        panelsTelemetry.addData("Hood", hoodservoup);
+        panelsTelemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
+        panelsTelemetry.update();
+        telemetry.update();
     }
+}

@@ -11,6 +11,7 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.commands.Commands.*;
+import static com.pedropathing.ivy.groups.Groups.parallel;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -34,30 +35,27 @@ public class Red2Tilt extends LinearOpMode {
     PollenServo pollen_servo;
     HoodServo hood_servo;
     LimelightServo limelight_servo;
-
     private Follower follower;
-
     private final PoseFactory poseFactory = PoseFactory.degrees();
-
     private final Pose start = poseFactory.of(38.4022, 10.0164, 90);
-    private final Pose path1 = poseFactory.of(29.3181, 22.3569, 41);
-    private final Pose point2Start = poseFactory.of(29.3181, 22.3569, 41);
+    private final Pose path1 = poseFactory.of(29.3181, 22.3569, 42.5);
+    private final Pose point2Start = poseFactory.of(29.3181, 22.3569, 42.5);
     private final Pose point2 = poseFactory.of(17.6069, 50.8038, 180);
     private final Pose point3Start = poseFactory.of(17.6069, 50.8038, 180);
-    private final Pose point3 = poseFactory.of(15.5, 50.8038, 180);
-    private final Pose jerk1start = poseFactory.of(15.5, 50.8038, 180);
+    private final Pose point3 = poseFactory.of(14.75, 50.8038, 180);
+    private final Pose jerk1start = poseFactory.of(14.75, 50.8038, 180);
     private final Pose jerk1 = poseFactory.of(22.5, 50.8038, 180);
     private final Pose jerk2start = poseFactory.of(22.5, 50.8038, 180);
     private final Pose jerk2 = poseFactory.of(15.5, 50.8038, 180);
     private final Pose point4Start = poseFactory.of(15.5, 50.8038, 180);
-    private final Pose point4 = poseFactory.of(28.681, 124.5143, 305);
+    private final Pose point4 = poseFactory.of(30.681, 122.5143, 300);
     private final Pose point4Control1 = poseFactory.of(36.7662, 67.4089, 0);
-    private final Pose point5Start = poseFactory.of(28.681, 124.5143, 305);
+    private final Pose point5Start = poseFactory.of(30.681, 122.5143, 300);
     private final Pose point5 = poseFactory.of(46.5916, 124.4168, 90);
     private final Pose point6Start = poseFactory.of(46.5916, 124.4168, 90);
     private final Pose point6 = poseFactory.of(46.5223, 128.9492, 90);
     private final Pose point7Start = poseFactory.of(46.5223, 128.9492, 90);
-    private final Pose point7 = poseFactory.of(28.8285, 124.1844, 305);
+    private final Pose point7 = poseFactory.of(30.8285, 122.1844, 302);
     private final Pose point7Control1 = poseFactory.of(42.808, 114.4799, 0);
     private final Pose point8 = poseFactory.of(13.9338, 116.1762, 28.2648);
 
@@ -66,9 +64,9 @@ public class Red2Tilt extends LinearOpMode {
         return sequential(
             instant(() -> outtake_motor.outtake_far()),
             instant(() -> pollen_servo.pollenServo_up()),
-            waitMs(1000),
+            waitMs(3000),
             instant(() -> intake_motor.intake_intake()),
-            waitMs(2500),
+            waitMs(2000),
             instant(() -> outtake_motor.outtake_stop()),
             instant(()-> intake_motor.intake_stop())
         );
@@ -95,6 +93,12 @@ public class Red2Tilt extends LinearOpMode {
             instant(() -> intake_motor.intake_stop())
         );
     }
+    public Command otherside() {
+        return parallel(
+            follow(follower,path4()),
+            instant(() -> hood_servo.hoodServo_up())
+        );
+    }
     public Command autoRoutine() {
         return sequential(
                 //shoot1
@@ -106,9 +110,9 @@ public class Red2Tilt extends LinearOpMode {
                 follow(follower, path2()),
                 intakeflower1(),
 
-
                 //shoot2
                 follow(follower, path4()),
+
                 shootfar(),
 
                 //intake2
