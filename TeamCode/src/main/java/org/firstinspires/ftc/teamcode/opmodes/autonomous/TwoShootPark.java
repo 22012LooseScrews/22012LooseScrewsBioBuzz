@@ -18,6 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.HoodServo;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
+import org.firstinspires.ftc.teamcode.abstractions.OpModeStorage;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -106,13 +107,15 @@ public class TwoShootPark extends LinearOpMode {
         Scheduler.reset();
         follower = Constants.create(hardwareMap);
         follower.setPose(start);
-        follower.update();
+
+
 
         waitForStart();
         schedule(autoRoutine());
 
         while (opModeIsActive()) {
             follower.update();
+            OpModeStorage.autonomousEndPose = follower.pose();
             Scheduler.execute();
 
             telemetry.addData("x", follower.pose().x());
@@ -127,6 +130,7 @@ public class TwoShootPark extends LinearOpMode {
             telemetry.update();
         }
     }
+
 
     public Path path1() {
         return Paths.line(start, path1).linear(start, path1);

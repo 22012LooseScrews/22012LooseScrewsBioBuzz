@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.IntakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.IntakeSect.HoodServo;
+import org.firstinspires.ftc.teamcode.abstractions.OpModeStorage;
 import org.firstinspires.ftc.teamcode.abstractions.OuttakeSect.OuttakeMotor;
 import org.firstinspires.ftc.teamcode.abstractions.LimelightSect.LimelightServo;
 import org.firstinspires.ftc.teamcode.abstractions.PollenSect.PollenServo;
@@ -58,6 +59,7 @@ public class RedOdoMecanumTeleOp extends OpMode {
 
         panelsTelemetry = PanelsTelemetry.INSTANCE.getTelemetry();
         follower = Constants.create(hardwareMap);
+        follower.setPose(OpModeStorage.autonomousEndPose);
 
 //        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 //        limelight.pipelineSwitch(0);
@@ -117,19 +119,20 @@ public class RedOdoMecanumTeleOp extends OpMode {
             outtake_motor.outtake_close();
             Pose pose = follower.pose();
 
-            double targetY = pose.y() > 70 ? 86 : 56;
 
-            double errorX = 57 - pose.x();
-            double errorY = targetY - pose.y();
-
-            double targetAngle = Math.atan2(errorY, errorX);
-            double turnError = targetAngle - pose.heading();
-
-// Normalize angle
-            turnError = Math.atan2(Math.sin(turnError), Math.cos(turnError));
-
-            double turn = turnError * 0.5;
-            double drive = Math.hypot(errorX, errorY) * 0.03;
+//            double targetY = pose.y() > 70 ? 86 : 56;
+//
+//            double errorX = 57 - pose.x();
+//            double errorY = targetY - pose.y();
+//
+//            double targetAngle = Math.atan2(errorY, errorX);
+//            double turnError = targetAngle - pose.heading();
+//
+//// Normalize angle
+//            turnError = Math.atan2(Math.sin(turnError), Math.cos(turnError));
+//
+//            double turn = turnError * 0.5;
+//            double drive = Math.hypot(errorX, errorY) * 0.03;
 
         } else if (gamepad1.right_trigger > 0.1) {
             outtake_motor.outtake_far();
@@ -200,6 +203,7 @@ public class RedOdoMecanumTeleOp extends OpMode {
         telemetry.addData("Hood: ", hoodservoup);
         telemetry.addData("Outtake Velocity: ", outtake_motor.getVel());
         telemetry.addData("Pose",currentPose);
+
         panelsTelemetry.addData("Servo: ", pservoup);
         panelsTelemetry.addData("Hood", hoodservoup);
         panelsTelemetry.addData("Outtake1velocity: ", outtake_motor.getVel());
