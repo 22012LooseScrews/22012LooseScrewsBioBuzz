@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'dev.frozenmilk.sinister.sloth.load'
+
 
 //
 // build.gradle in TeamCode
@@ -33,5 +35,6 @@ dependencies {
     implementation project(':FtcRobotController')
     implementation "com.bylazar:fullpanels:1.0.18"
     implementation "com.bylazar:panels:1.0.7"
-    implementation 'com.skeletonarmyftc.marrow:core:1.2.2'
+    implementation 'com.skeletonarmyftc.marrow:core:1.2.5'
+    implementation("dev.frozenmilk.sinister:Sloth:0.3.2")
 }
